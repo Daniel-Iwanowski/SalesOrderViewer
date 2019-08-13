@@ -1,0 +1,88 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+	xmlns:l="sap.ui.layout">
+	<Dialog 
+		title="{i18n>productInformation}" 
+		class="sapUiPopWithPadding" 
+		resizable="true" 
+		draggable="true" 
+		contentWidth="500px"
+		stretch="{orderView>/dialogStretch}" 
+		horizontalScrolling="false" 
+		verticalScrolling="true" 
+		beforeOpen="onBeforeOpenDialog"
+		afterOpen="onAfterOpenDialog">
+		<content>
+			<List 
+				id="dialogList" 
+				backgroundDesign="Solid" 
+				busy="{orderView>/dialogBusy}" 
+				busyIndicatorDelay="0" 
+				headerText="{ProductID} {Name}"
+				mode="None" 
+				showSeparators="None">
+				<items>
+					<GroupHeaderListItem 
+						title="{i18n>productGeneralInformation}" 
+						type="Active"/>
+					<DisplayListItem 
+						label="{i18n>productCategory}" 
+						value="{Category}"/>
+					<FeedListItem 
+						text="{Description}" 
+						showIcon="false"/>
+					<GroupHeaderListItem 
+						title="{i18n>productDetails}" 
+						type="Active"/>
+					<DisplayListItem 
+						label="{i18n>productUOM}" 
+						value="{ 
+							path: 'MeasureUnit', 
+							formatter: '.formatter.unitQuantityName' }"/>
+					<DisplayListItem 
+						label="{i18n>productPrice}"
+						value="{ 
+							parts: [
+								{path: 'Price' },
+								{ path: 'CurrencyCode' }], 
+							type: 'sap.ui.model.type.Currency', 
+							formatOptions: { showMeasure: true } }"
+						tooltip="{ 
+							path: 'CurrencyCode', 
+							formatter: '.formatter.currencyName' }"/>
+					<GroupHeaderListItem 
+						title="{i18n>productSizeAndWeight}" 
+						type="Active"/>
+					<DisplayListItem 
+						label="{i18n>productWidthDepthHeight}"
+						value="{ 
+							path: 'Width', 
+							formatter: '.formatter.numberUnit' } / { 
+							path: 'Depth', 
+							formatter: '.formatter.numberUnit' } / { 
+							path: 'Height', 
+							formatter: '.formatter.numberUnit' } { 
+							path: 'DimUnit', 
+							formatter: '.formatter.unitLengthName' }"/>
+					<DisplayListItem label="{i18n>productWeight}"
+						value="{ 
+							path: 'WeightMeasure', 
+							formatter: '.formatter.numberUnit' } { 
+							path: 'WeightUnit', 
+							formatter: '.formatter.unitWeightName' }"/>
+					<GroupHeaderListItem 
+						title="{i18n>productSupplier}" 
+						type="Navigation" 
+						press="onShowSupplierPopover" 
+						id="idSupplierDetailsHeader"/>
+				</items>
+			</List>
+		</content>
+		<beginButton>
+			<Button 
+				text="{i18n>productDialogClose}" 
+				press="onCloseDialog"/>
+		</beginButton>
+	</Dialog>
+</core:FragmentDefinition>

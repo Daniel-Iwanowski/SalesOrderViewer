@@ -1,0 +1,251 @@
+<mvc:View
+	controllerName="salesorderviewer.SalesOrderViewer.controller.Order"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:semantic="sap.f.semantic"
+	xmlns:form="sap.ui.layout.form"
+	xmlns:core="sap.ui.core"
+	xmlns="sap.m">
+	<semantic:SemanticPage>
+		<semantic:titleHeading>
+			<Title 
+				text="{orderView>/orderViewTitle}" 
+				level="H2"/>
+		</semantic:titleHeading>
+		<semantic:headerContent>
+			<Table 
+				id="orderHeaderList" 
+				width="auto" 
+				mode="None" 
+				items="{orderView>/orderHeaderTab}"
+				noDataText="{i18n>orderLineHeaderTableHeadingNotFound}">
+				<headerToolbar>
+					<Toolbar>
+						<Title 
+							id="orderHeaderTitle" 
+							text="{orderView>/orderHeaderTitle}" 
+							titleStyle="H3" 
+							level="H3"/>
+					</Toolbar>
+				</headerToolbar>
+				<columns>
+					<Column>
+						<Text 
+							text="{i18n>detailLineItemTableIDColumn}"/>
+					</Column>
+					<Column 
+						hAlign="End">
+						<Text 
+							text="{i18n>detailLineItemTableGrossAmount}"/>
+					</Column>
+					<Column 
+						hAlign="End" 
+						demandPopin="true" 
+						minScreenWidth="Tablet">
+						<Text 
+							text="{i18n>detailLineItemTableNetAmount}"/>
+					</Column>
+					<Column 
+						hAlign="End" 
+						demandPopin="true" 
+						minScreenWidth="Tablet">
+						<Text 
+							text="{i18n>detailLineItemTableTaxAmount}"/>
+					</Column>
+					<Column 
+						hAlign="End">
+						<Text 
+							text="{i18n>detailLineItemTableCurrency}"/>
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem>
+						<cells>
+							<ObjectIdentifier
+								text="{ 
+									path: 'SalesOrderID', 
+									type : 'sap.ui.model.odata.type.String', 
+									constraints : { 
+										isDigitSequence : true, 
+										maxLength : 10 } }"/>
+							<ObjectNumber 
+								number="{ 
+									path: 'GrossAmount', 
+									formatter: '.formatter.currencyValue' }" 
+								state="{= ${GrossAmount} > 10000 ? 'Error' : 'None'}"/>
+							<ObjectNumber 
+								number="{ 
+									path: 'NetAmount', 
+									formatter: '.formatter.currencyValue' }"/>
+							<ObjectNumber 
+								number="{ 
+									path: 'TaxAmount', 
+									formatter: '.formatter.currencyValue' }"/>
+							<ObjectStatus 
+								text="{CurrencyCode}"
+								tooltip="{
+									path: 'CurrencyCode',
+									formatter: '.formatter.currencyName' }"/>
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+			<MessageStrip 
+				type="Warning" 
+				showIcon="true"
+				showCloseButton="true"
+				text="{orderView>/orderNoteText}"
+				class="sapUiMediumMarginTopBottom"
+				visible="{
+					path: 'orderView>/orderNoteText',
+					formatter: '.formatter.messageIsNotEmpty'
+				}"/>
+		</semantic:headerContent>
+		<semantic:content>
+			<Table 
+				id="orderItemsList" 
+				width="auto" 
+				mode="None" 
+				items="{
+					path: 'ToLineItems',
+					sorter: { 
+						path: 'ItemPosition', 
+						descending: false 
+					}, 					
+					parameters: {
+						expand: 'ToProduct'
+					} }"
+				updateFinished=".onListUpdateFinished"
+				noDataText="{i18n>orderItemTableNoDataText}">
+				<headerToolbar>
+					<Toolbar>
+						<Title 
+							id="orderItemsTitle" 
+							text="{orderView>/orderItemsTitle}" 
+							titleStyle="H3" 
+							level="H3"/>
+					</Toolbar>
+				</headerToolbar>
+				<columns>
+					<Column>
+						<Text 
+							text="{i18n>orderLineItemTableIDColumn}"/>
+					</Column>
+					<Column>
+						<Text 
+							text="{i18n>orderLineItemTableProductID}"/>
+					</Column>
+					<Column 
+						hAlign="End">
+						<Text 
+							text="{i18n>orderLineItemTableGrossAmount}"/>
+					</Column>
+					<Column 
+						hAlign="End" 
+						demandPopin="false" 
+						minScreenWidth="Tablet">
+						<Text 
+							text="{i18n>orderLineItemTableNetAmount}"/>
+					</Column>
+					<Column 
+						hAlign="End" 
+						demandPopin="true" 
+						minScreenWidth="Tablet">
+						<Text 
+							text="{i18n>orderLineItemTableTaxAmount}"/>
+					</Column>
+					<Column hAlign="End">
+						<Text 
+							text="{i18n>orderLineItemTableCurrency}"/>
+					</Column>
+					<Column 
+						hAlign="End" 
+							demandPopin="false" 
+							minScreenWidth="Tablet">
+						<Text 
+							text="{i18n>orderLineItemTableDeliveryDate}"/>
+					</Column>
+					<Column 
+						hAlign="End" 
+						demandPopin="true" 
+						minScreenWidth="Tablet">
+						<Text 
+							text="{i18n>orderLineItemTableQuantity}"/>
+					</Column>
+				</columns>				
+				<items>
+					<ColumnListItem>
+						<cells>
+							<ObjectIdentifier
+								text="{ 
+									path: 'ItemPosition', 
+									type : 'sap.ui.model.odata.type.String', 
+									constraints : { 
+										isDigitSequence : true, 
+										maxLength : 5 } }"/>
+							<ObjectIdentifier
+								title="{ProductID}"
+								titleActive="true" 
+								titlePress="onShowDialog"
+								text="{ToProduct/Name}"/>
+							<ObjectNumber 
+								number="{ 
+									path: 'GrossAmount', 
+									formatter: '.formatter.currencyValue' }" 
+								state="{= ${GrossAmount} > 10000 ? 'Error' : 'None'}"/>
+							<ObjectNumber 
+								number="{ 
+									path: 'NetAmount', 
+									formatter: '.formatter.currencyValue' }"/>
+							<ObjectNumber 
+								number="{ 
+									path: 'TaxAmount', 
+									formatter: '.formatter.currencyValue' }"/>
+							<ObjectStatus 
+								text="{CurrencyCode}"
+								tooltip="{
+									path: 'CurrencyCode',
+									formatter: '.formatter.currencyName' }"/>
+							<ObjectStatus 
+								text="{
+									path:'DeliveryDate', 
+									type:'sap.ui.model.type.Date', 
+									formatOptions : { 
+										style:'short', 
+										UTC: true}}"/>
+							<ObjectNumber 
+								number="{
+									parts: [{
+										path: 'Quantity' },{
+										path: 'QuantityUnit',
+										formatter: '.formatter.unitQuantityName'}],
+									formatOptions: {
+										showMeasure: true}}"/>
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>			
+		</semantic:content>
+		<semantic:sendEmailAction>
+			<semantic:SendEmailAction 
+				id="shareEmail" 
+				press=".onSendEmailPress"/>
+		</semantic:sendEmailAction>
+		<semantic:closeAction>
+			<semantic:CloseAction 
+				id="closeColumn" 
+				press=".onCloseDetailPress"/>
+		</semantic:closeAction>
+		<semantic:fullScreenAction>
+			<semantic:FullScreenAction 
+				id="enterFullScreen"
+				visible="{= !${device>/system/phone} &amp;&amp; !${appView>/actionButtonsInfo/midColumn/fullScreen}}" 
+				press=".toggleFullScreen"/>
+		</semantic:fullScreenAction>
+		<semantic:exitFullScreenAction>
+			<semantic:ExitFullScreenAction 
+				id="exitFullScreen"
+				visible="{= !${device>/system/phone} &amp;&amp; ${appView>/actionButtonsInfo/midColumn/fullScreen}}" 
+				press=".toggleFullScreen"/>
+		</semantic:exitFullScreenAction>
+	</semantic:SemanticPage>
+</mvc:View>			

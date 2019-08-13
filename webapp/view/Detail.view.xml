@@ -1,0 +1,152 @@
+<mvc:View 
+	controllerName="salesorderviewer.SalesOrderViewer.controller.Detail" 
+	xmlns="sap.m" 
+	xmlns:core="sap.ui.core"
+	xmlns:semantic="sap.f.semantic" 
+	xmlns:mvc="sap.ui.core.mvc">
+	<semantic:SemanticPage 
+		id="detailPage" 
+		busy="{detailView>/busy}" 
+		busyIndicatorDelay="{detailView>/delay}">
+		<semantic:titleHeading>
+			<Title 
+				text="{CompanyName}" 
+				level="H2"/>
+		</semantic:titleHeading>
+		<semantic:headerContent>
+			<IconTabBar 
+				id="idTopLevelIconTabBar" 
+				applyContentPadding="true" 
+				expanded="false" 
+				expandable="true">
+				<items>
+					<IconTabFilter 
+						id="idPartnerDetailsTab" 
+						icon="sap-icon://customer">
+						<core:Fragment 
+							fragmentName="salesorderviewer.SalesOrderViewer.view.PartnerDetail" 
+							type="XML"/>
+					</IconTabFilter>
+					<IconTabFilter 
+						id="idDummyTab" 
+						visible="false">
+						<!-- This dummy tab was neccesary to get rid 
+						of the error message in Web IDE: IconTabBar with 
+						single tab is not allowed -->						
+					</IconTabFilter>
+				</items>
+			</IconTabBar>
+		</semantic:headerContent>
+		<semantic:content>
+			<Table 
+				id="lineItemsList" 
+				width="auto" 
+				mode="SingleSelectMaster" 
+				items="{ToSalesOrders}" 
+				updateFinished=".onListUpdateFinished"
+				noDataText="{i18n>detailLineItemTableNoDataText}" 
+				busyIndicatorDelay="{detailView>/lineItemTableDelay}"
+				selectionChange="onSelect">
+				<headerToolbar>
+					<Toolbar>
+						<Title 
+							id="lineItemsTitle" 
+							text="{detailView>/lineItemListTitle}" 
+							titleStyle="H3" 
+							level="H3"/>
+						<ToolbarSpacer/>
+						<Button
+							id="sortButton"
+							press=".onOpenViewSettings"
+							icon="sap-icon://sort"
+							tooltip="{i18n>detailSortTooltip}"
+							type="Transparent"/>
+					</Toolbar>
+				</headerToolbar>
+				<columns>
+					<Column>
+						<Text 
+							text="{i18n>detailLineItemTableIDColumn}"/>
+					</Column>
+					<Column 
+						hAlign="End">
+						<Text 
+							text="{i18n>detailLineItemTableGrossAmount}"/>
+					</Column>
+					<Column 
+						hAlign="End" 
+						demandPopin="true" 
+						minScreenWidth="Tablet">
+						<Text 
+							text="{i18n>detailLineItemTableNetAmount}"/>
+					</Column>
+					<Column 
+						hAlign="End" 
+						demandPopin="true" 
+						minScreenWidth="Tablet">
+						<Text 
+							text="{i18n>detailLineItemTableTaxAmount}"/>
+					</Column>
+					<Column 
+						hAlign="End">
+						<Text 
+							text="{i18n>detailLineItemTableCurrency}"/>
+					</Column>
+				</columns>
+				<items>
+					<ColumnListItem>
+						<cells>
+							<ObjectIdentifier
+								text="{ 
+									path: 'SalesOrderID', 
+									type : 'sap.ui.model.odata.type.String', 
+									constraints : { 
+										isDigitSequence : true, 
+										maxLength : 10 } }"/>
+							<ObjectNumber 
+								number="{ 
+									path: 'GrossAmount', 
+									formatter: '.formatter.currencyValue' }" 
+								state="{= ${GrossAmount} > 10000 ? 'Error' : 'None'}"/>
+							<ObjectNumber 
+								number="{ 
+									path: 'NetAmount', 
+									formatter: '.formatter.currencyValue' }"/>
+							<ObjectNumber 
+								number="{ 
+									path: 'TaxAmount', 
+									formatter: '.formatter.currencyValue' }"/>
+							<ObjectStatus 
+								text="{CurrencyCode}"
+								tooltip="{
+									path: 'CurrencyCode',
+									formatter: '.formatter.currencyName' }"/>
+						</cells>
+					</ColumnListItem>
+				</items>
+			</Table>
+		</semantic:content>
+		<semantic:sendEmailAction>
+				<semantic:SendEmailAction 
+				id="shareEmail" 
+				press=".onSendEmailPress"/>
+			</semantic:sendEmailAction>
+		<semantic:closeAction>
+			<semantic:CloseAction 
+				id="closeColumn" 
+				press=".onCloseDetailPress"/>
+		</semantic:closeAction>
+		<semantic:fullScreenAction>
+			<semantic:FullScreenAction 
+				id="enterFullScreen"
+				visible="{= !${device>/system/phone} &amp;&amp; !${appView>/actionButtonsInfo/midColumn/fullScreen}}" 
+				press=".toggleFullScreen"/>
+		</semantic:fullScreenAction>
+		<semantic:exitFullScreenAction>
+			<semantic:ExitFullScreenAction 
+				id="exitFullScreen"
+				visible="{= !${device>/system/phone} &amp;&amp; ${appView>/actionButtonsInfo/midColumn/fullScreen}}" 
+				press=".toggleFullScreen"/>
+		</semantic:exitFullScreenAction>
+	</semantic:SemanticPage>
+</mvc:View>

@@ -1,0 +1,66 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core"
+	xmlns:l="sap.ui.layout">
+	<ResponsivePopover
+		title="{i18n>productSupplier}"
+		class="sapUiPopWithPadding"
+		beforeOpen="onBeforeOpenPopover"
+		afterOpen="onAfterOpenPopover">
+		<content>
+			<List
+				backgroundDesign="Solid"
+				busy="{orderView>/popoverBusy}" 
+				busyIndicatorDelay="0"
+				mode="None"
+				showSeparators="None">
+				<items>
+					<DisplayListItem 
+						label="{i18n>productCompanyName}"
+						value="{ToSupplier/CompanyName}"
+						tooltip="{ToSupplier/CompanyName}"/>
+					<StandardListItem 
+						icon="sap-icon://world"
+						title="{ToSupplier/WebAddress}"
+						type="Navigation"
+						press="onURLClick"/>
+					<StandardListItem 
+						icon="sap-icon://email"
+						title="{ToSupplier/EmailAddress}"
+						type="Navigation"
+						press="onEmailClick"/>
+					<StandardListItem 
+						icon="sap-icon://phone"
+						title="{ToSupplier/PhoneNumber}"/>
+					<StandardListItem 
+						icon="sap-icon://fax-machine"
+						title="{ToSupplier/FaxNumber}"/>
+					<DisplayListItem 
+						label="{i18n>productCompanyStreet}"
+						value="{ToSupplier/Address/Street}"
+						tooltip="{ToSupplier/Address/Street}"/>
+					<DisplayListItem 
+						label="{i18n>productCompanyBuilding}"
+						value="{ToSupplier/Address/Building}"
+						tooltip="{ToSupplier/Address/Building}"/>
+					<DisplayListItem 
+						label="{i18n>productCompanyPostalCode}"
+						value="{ToSupplier/Address/PostalCode}"
+						tooltip="{ToSupplier/Address/PostalCode}"/>
+					<DisplayListItem 
+						label="{i18n>productCompanyCity}"
+						value="{ToSupplier/Address/City}"
+						tooltip="{ToSupplier/Address/City}"/>
+					<DisplayListItem 
+						label="{i18n>productCompanyCountry}"
+						value="{
+							path: 'ToSupplier/Address/Country',
+							formatter: '.formatter.countryName' }"
+						tooltip="{
+							path: 'ToSupplier/Address/Country',
+							formatter: '.formatter.countryName' }"/>
+				</items>
+			</List>
+		</content>
+	</ResponsivePopover>
+</core:FragmentDefinition>

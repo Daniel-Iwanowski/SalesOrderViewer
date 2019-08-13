@@ -1,0 +1,28 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<ViewSettingsDialog
+		id="masterViewSettingsDialog"
+		confirm=".onConfirmViewSettingsDialog">
+		<sortItems>
+			<ViewSettingsItem
+				text="{i18n>masterSort1}"
+				key="CompanyName"
+				selected="true"/>
+			<ViewSettingsItem
+				text="{i18n>masterSort2}"
+				key="BusinessPartnerID"
+				selected="false"/>
+		</sortItems>
+		<groupItems>
+			<ViewSettingsItem
+				text="{i18n>masterGroup1}"
+				key="Address/Country"
+				selected="false"/>
+			<ViewSettingsItem
+				text="{i18n>masterGroup2}"
+				key="LegalForm"
+				selected="false"/>
+		</groupItems>
+	</ViewSettingsDialog>
+</core:FragmentDefinition>
