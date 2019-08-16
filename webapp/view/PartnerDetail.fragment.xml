@@ -15,7 +15,7 @@
 				demandPane="true">
 				<Panel 
 					width="auto" 
-					height="400px" 
+					height="450px" 
 					class="sapUiResponsiveMargin" 
 					accessibleRole="Region" 
 					headerText="{i18n>detailViewPartnerDetails}">
@@ -71,6 +71,9 @@
 						</f:Form>
 					</content>
 				</Panel>
+				<l:layoutData>
+					<l:SplitterLayoutData size="30%"/>
+				</l:layoutData>
 			</l:SplitPane>
 			<l:SplitPane 
 				requiredParentWidth="640" 
@@ -78,7 +81,7 @@
 				<Panel 
 					class="sapUiResponsiveMargin" 
 					width="auto" 
-					height="400px" 
+					height="450px" 
 					headerText="{i18n>detailViewPartnerMap}"
 					busy="{detailView>/busyHTML}" 
 					busyIndicatorDelay="{detailView>/delay}">

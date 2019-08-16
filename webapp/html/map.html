@@ -1,31 +1,57 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <meta http-equiv="Content-type" content="text/html;charset=UTF-8">
-    <link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.0/mapsjs-ui.css" />
-    <script type="text/javascript" src="https://js.api.here.com/v3/3.0/mapsjs-core.js"></script>
-    <script type="text/javascript" src="https://js.api.here.com/v3/3.0/mapsjs-service.js"></script>
-    <script type="text/javascript" src="https://js.api.here.com/v3/3.0/mapsjs-ui.js"></script>
-    <script type="text/javascript" src="https://js.api.here.com/v3/3.0/mapsjs-mapevents.js"></script>
+    <meta 
+    	name="viewport" 
+    	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <meta 
+    	http-equiv="Content-type" 
+    	content="text/html;charset=UTF-8">
+    <link 
+    	rel="stylesheet" 
+    	type="text/css" 
+    	href="https://js.api.here.com/v3/3.0/mapsjs-ui.css" />
+    <script 
+    	type="text/javascript" 
+    	src="https://js.api.here.com/v3/3.0/mapsjs-core.js">
+    </script>
+    <script 
+    	type="text/javascript" 
+    	src="https://js.api.here.com/v3/3.0/mapsjs-service.js">
+    </script>
+    <script 
+    	type="text/javascript" 
+    	src="https://js.api.here.com/v3/3.0/mapsjs-ui.js">
+    </script>
+    <script 
+    	type="text/javascript" 
+    	src="https://js.api.here.com/v3/3.0/mapsjs-mapevents.js">
+    </script>
     <style>
-      #map {width: 100%; height: 310px; background: grey;}
-      #panel {width: 100%; height: 310px;}    
+      #map {width: 100%; height: 360px; background: grey;}
+      #panel {width: 100%; height: 360px;}    
     </style>
   </head>
   <body>
     <div id="map"></div>
     <script>
-      var app = { platform: new H.service.Platform({
-                    app_id: 'dsVy9baZaFQuH4m2rENo',
-                    app_code: 'poWeZ2bF--W7VPwTdIJJNg',
-                    useCIT: true,
-                    useHTTPS: true
-                })},
-          defaultLayers = app.platform.createDefaultLayers(),
-          map = new H.Map(document.getElementById('map'), defaultLayers.normal.map, { center : { lat : 50, lng : 0 }, zoom : 3 } ),
-          behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map)),
-          ui = H.ui.UI.createDefault(map, defaultLayers);
+      var app = { 
+      	platform: new H.service.Platform({
+			app_id: 'dsVy9baZaFQuH4m2rENo',
+            app_code: 'poWeZ2bF--W7VPwTdIJJNg',
+            useCIT: true,
+            useHTTPS: true
+        })},
+        defaultLayers = app.platform.createDefaultLayers(),
+        map = new H.Map(
+        	document.getElementById('map'), 
+        	defaultLayers.normal.map, 
+        	{ 
+        		center : { lat : 50, lng : 0 }, 
+        		zoom : 3 
+        	}),
+        behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map)),
+        ui = H.ui.UI.createDefault(map, defaultLayers);
 
       function geocode (platform, ivStreet, ivCity, ivCountry) {
         var geocoder = platform.getGeocodingService(),
