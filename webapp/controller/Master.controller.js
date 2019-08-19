@@ -68,7 +68,6 @@ sap.ui.define([
 
 			this.getRouter().getRoute("masterRT").attachPatternMatched(this._onMasterMatched, this);
 			this.getRouter().attachBypassed(this.onBypassed, this);
-			oViewModel.setProperty("/filterActive", true);
 			oViewModel.setProperty("/groupingKey", "");
 		},
 
@@ -85,6 +84,10 @@ sap.ui.define([
 		onUpdateFinished: function (oEvent) {
 			// update the master list object counter after new data is loaded
 			this._updateListItemCount(oEvent.getParameter("total"));
+
+			if (oEvent.getParameter("reason") === "Refresh") {
+				this._filterEnable();
+			}
 		},
 
 		/**
@@ -215,7 +218,7 @@ sap.ui.define([
 					}
 				}
 			}
-			if(sResult === "") {
+			if (sResult === "") {
 				return sCountry;
 			} else {
 				return sResult + " (" + sCountry + ")";
@@ -273,22 +276,32 @@ sap.ui.define([
 		},
 
 		onSegmentedButtonChange: function (oEvent) {
+			var selectedKey = oEvent.getParameter("item").getKey();
+			if (selectedKey === "hideDummy") {
+				this._filterEnable();
+			} else if (selectedKey === "showDummy") {
+				this._filterDisable();
+			}
+		},
+
+		_filterEnable: function () {
 			var oViewModel = this.getModel("masterView"),
 				oFilter,
 				oList = this.byId("list"),
 				oBinding = oList.getBinding("items");
+			oFilter = this._mBPartnerFilters.NotDummy;
+			oViewModel.setProperty("/filterSelectedKey", "hideDummy");
+			oBinding.filter(oFilter);
+		},
 
-			if (oEvent.getParameter("item").getKey() === "hideDummy") {
-				oFilter = this._mBPartnerFilters.NotDummy;
-				oViewModel.setProperty("/filterActive", false);
-				oBinding.filter(oFilter);
-			}
-
-			if (oEvent.getParameter("item").getKey() === "showDummy") {
-				oFilter = this._mBPartnerFilters.All;
-				oViewModel.setProperty("/filterActive", true);
-				oBinding.filter(oFilter);
-			}
+		_filterDisable: function () {
+			var oViewModel = this.getModel("masterView"),
+				oFilter,
+				oList = this.byId("list"),
+				oBinding = oList.getBinding("items");
+			oFilter = this._mBPartnerFilters.All;
+			oViewModel.setProperty("/filterSelectedKey", "showDummy");
+			oBinding.filter(oFilter);
 		},
 
 		/* =========================================================== */
@@ -302,7 +315,7 @@ sap.ui.define([
 				delay: 0,
 				title: this.getResourceBundle().getText("masterTitleCount", [0]),
 				noDataText: this.getResourceBundle().getText("masterListNoDataText"),
-				filterActive: false,
+				filterSelectedKey: "showDummy",
 				groupingKey: "",
 				list: null
 			});

@@ -68,7 +68,7 @@
 							tooltip="{i18n>masterGroupTooltip}"
 							type="Transparent"/>
 						<SegmentedButton 
-							selectedKey="showDummy"
+							selectedKey="{masterView>/filterSelectedKey}"
 							selectionChange="onSegmentedButtonChange">
 							<items>
 								<SegmentedButtonItem 
