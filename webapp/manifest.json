@@ -22,7 +22,7 @@
 		},
 		"sourceTemplate": {
 			"id": "sap.ui.ui5-template-plugin.2masterdetail",
-			"version": "1.65.5"
+			"version": "1.44.27"
 		}
 	},
 	"sap.ui": {
@@ -97,7 +97,7 @@
 						"masterTG",
 						"detailTG"
 					]
-				}, 
+				},
 				{
 					"pattern": "BusinessPartnerSet/{partnerId}/SalesOrderSet/{orderId}",
 					"name": "orderRT",
@@ -138,5 +138,9 @@
 				}
 			}
 		}
+	},
+	"sap.platform.hcp": {
+		"uri": "webapp",
+		"_version": "1.1.0"
 	}
 }
