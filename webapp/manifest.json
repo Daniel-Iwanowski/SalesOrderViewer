@@ -1,4 +1,4 @@
-{
+{ 
 	"_version": "1.12.0",
 	"sap.app": {
 		"id": "salesorderviewer.SalesOrderViewer",
