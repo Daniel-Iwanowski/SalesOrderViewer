@@ -22,7 +22,7 @@
 		},
 		"sourceTemplate": {
 			"id": "sap.ui.ui5-template-plugin.2masterdetail",
-			"version": "1.65.5"
+			"version": "1.44.27"
 		}
 	},
 	"sap.ui": {
