@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta 
+    	name="viewport" 
+    	content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <meta 
+    	http-equiv="Content-type" 
+    	content="text/html;charset=UTF-8">
+    <link 
+    	rel="stylesheet" 
+    	type="text/css" 
+    	href="https://js.api.here.com/v3/3.0/mapsjs-ui.css" />
+    <script 
+    	type="text/javascript" 
+    	src="https://js.api.here.com/v3/3.0/mapsjs-core.js">
+    </script>
+    <script 
+    	type="text/javascript" 
+    	src="https://js.api.here.com/v3/3.0/mapsjs-service.js">
+    </script>
+    <script 
+    	type="text/javascript" 
+    	src="https://js.api.here.com/v3/3.0/mapsjs-ui.js">
+    </script>
+    <script 
+    	type="text/javascript" 
+    	src="https://js.api.here.com/v3/3.0/mapsjs-mapevents.js">
+    </script>
+    <style>
+      #map {width: 100%; height: 360px; background: grey;}
+      #panel {width: 100%; height: 360px;}    
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script>
+      var app = { 
+      	platform: new H.service.Platform({
+			app_id: 'dsVy9baZaFQuH4m2rENo',
+            app_code: 'poWeZ2bF--W7VPwTdIJJNg',
+            useCIT: true,
+            useHTTPS: true
+        })},
+        defaultLayers = app.platform.createDefaultLayers(),
+        map = new H.Map(
+        	document.getElementById('map'), 
+        	defaultLayers.normal.map, 
+        	{ 
+        		center : { lat : 0, lng : 0 }, 
+        		zoom : 1 
+        	}),
+        behavior = new H.mapevents.Behavior(new H.mapevents.MapEvents(map)),
+        ui = H.ui.UI.createDefault(map, defaultLayers);
+
+      function geocode (platform, ivStreet, ivCity, ivCountry) {
+        var geocoder = platform.getGeocodingService(),
+            geocodingParameters = {
+//              searchText : ivStreet + ' ' + ivCity + ' ' + ivCountry,
+              searchText : ivStreet + ' ' + ivCity,
+              jsonattributes : 1
+            },
+            addLocationsToMap = function (locations) {
+              var group = new  H.map.Group(),
+              position,
+              i;
+              console.warn( "Locations found:" );
+              for (i = 0;  i < locations.length; i += 1) {
+                position = {
+                  lat : locations[i].location.displayPosition.latitude,
+                  lng : locations[i].location.displayPosition.longitude
+                };
+                marker = new H.map.Marker(position);
+                marker.label = locations[i].location.address.label;
+                group.addObject(marker);
+                console.warn( locations[i].location.address.label );
+                console.warn( "latitude: " +  
+                              locations[i].location.displayPosition.latitude + 
+                              ", longitude: " + 
+                              locations[i].location.displayPosition.longitude );
+              }
+              group.addEventListener('tap', function (evt) {
+                map.setCenter(evt.target.getPosition());
+                openBubble(evt.target.getPosition(), evt.target.label);
+              }, false);
+              
+              map.addObject(group);
+              map.setCenter(group.getBounds().getCenter());
+              map.setZoom(16);
+            };
+        console.warn( 'Map search string: "' + ivStreet + ' ' + ivCity + '"'  ) 
+        geocoder.geocode(
+          geocodingParameters,
+          function (result) {
+            if (typeof result.response.view[0] != "undefined") {
+              addLocationsToMap(result.response.view[0].result);
+        	} else {
+            	console.error( 'No location found for search string "' + ivStreet + ' ' + ivCity + '"' ); 
+        	}
+          },
+          function (error) {
+            console.error( error ); 
+          }
+        );
+      }
+ 
+      window.addEventListener('resize', () => map.getViewPort().resize());
+      window.onload = function () {
+        var urlParams = new URLSearchParams(window.location.search);
+        console.warn( "Map control initialized" );
+        geocode(app.platform, urlParams.get('Street'), urlParams.get('City'), urlParams.get('Country'));
+      }
+    </script>
+  </body>
+</html>
