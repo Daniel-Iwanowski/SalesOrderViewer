@@ -60,8 +60,28 @@ sap.ui.define([
 			} else {
 				this.getRouter().navTo("master", {}, true);
 			}
+		},
+
+		getRootPath: function (relativePath) {
+			var resultPath = relativePath;
+			if ((window.location.pathname === '/') ||
+				(window.location.pathname === '/index.html') ||
+				(window.location.pathname === '/webapp/index.html')) {
+				resultPath = "./" + relativePath;
+			} else if (
+				(window.location.pathname === '/sites/') ||
+				(window.location.pathname === '/sites') ||
+				(window.location.pathname.includes("designer") && window.location.pathname.includes("Preview"))) {
+				resultPath = "../sap/fiori/salesorderviewer/" + relativePath;
+			} else if (
+				window.location.pathname.includes("sandbox") &&
+				window.location.pathname.includes("fiori")) {
+				resultPath = "../../../../../webapp/" + relativePath;
+			}
+//			console.warn(window.location.pathname + "=>" + resultPath);
+			return resultPath;
 		}
-		
+
 	});
 
 });

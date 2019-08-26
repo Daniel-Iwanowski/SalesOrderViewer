@@ -15,20 +15,14 @@ sap.ui.define([], function () {
 		formatInteractiveMap: function (sStreet, sBuilding, sCity, sPostalCode, sCountry) {
 			var vHTML1 = "<iframe height='99%' width='100%' marginheight='0' marginwidth='0' frameborder='0' src='",
 				vHTML2 = "'>HERE maps not available!</iframe>",
-				vURL = "./html/map.html",
-				sParam1,
-				sParam2,
-				sParam3,
-				sParam4,
-				sParam5,
+				sParam1 = (sStreet === null) ? "" : jQuery.sap.encodeURL(sStreet),
+				sParam2 = (sBuilding === null) ? "" : jQuery.sap.encodeURL(sBuilding),
+				sParam3 = (sCity === null) ? "" : jQuery.sap.encodeURL(sCity),
+				sParam4 = (sPostalCode === null) ? "" : jQuery.sap.encodeURL(sPostalCode),
+				sParam5 = (sCountry === null) ? "" : jQuery.sap.encodeURL(sCountry),
+				vURL = this.getView().getController().getRootPath("html/map.html"),
 				sFullPath;
-
-			sParam1 = (sStreet === null) ? "" : jQuery.sap.encodeURL(sStreet);
-			sParam2 = (sBuilding === null) ? "" : jQuery.sap.encodeURL(sBuilding);
-			sParam3 = (sCity === null) ? "" : jQuery.sap.encodeURL(sCity);
-			sParam4 = (sPostalCode === null) ? "" : jQuery.sap.encodeURL(sPostalCode);
-			sParam5 = (sCountry === null) ? "" : jQuery.sap.encodeURL(sCountry);
-
+			
 			if (sParam2 !== "") {
 				sParam1 = jQuery.sap.encodeURL(sStreet + " " + sBuilding);
 			}
